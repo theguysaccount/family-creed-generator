@@ -44,7 +44,7 @@ tests/                node:test unit and build tests
 
 ## Run, test, deploy
 
-Needs Node 20+ (CI uses 22) and, for share cards, screenshots and the self-test, Google Chrome. No npm packages.
+Needs Node 20+ (CI uses 24) and, for share cards, screenshots and the self-test, Google Chrome. No npm packages.
 
 ```bash
 npm test                                   # 27 unit + build tests
