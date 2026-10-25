@@ -1,0 +1,14 @@
+{
+  "name": "family-creed-generator",
+  "private": true,
+  "type": "module",
+  "license": "CC0-1.0",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "build": "node scripts/build.mjs",
+    "selftest": "node scripts/selftest.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

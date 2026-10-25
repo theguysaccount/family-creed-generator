@@ -1,0 +1,108 @@
+# Build, test and deploy the site to GitHub Pages.
+# Runs on every push to main, weekly on Mondays (publishes the next example from the backlog and
+# re-runs the full self-test), and by hand. Fails safe: if the tests, the build or the browser
+# self-test fail, nothing is deployed and the last good version stays live.
+name: Build, test and deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  # The public URL. Set the repository variable FCG_SITE_URL (e.g. https://familycreed.app) after
+  # pointing a custom domain; until then it is the github.io project URL.
+  FCG_BASE_URL: ${{ vars.FCG_SITE_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
+  FCG_REPO: ${{ github.repository }}
+  FCG_SHOP_URL: ${{ vars.FCG_SHOP_URL }}           # optional: print-on-demand store link (money key)
+  FCG_SUPPORT_URL: ${{ vars.FCG_SUPPORT_URL }}     # optional: donation / sponsor link
+  FCG_GOATCOUNTER: ${{ vars.FCG_GOATCOUNTER }}     # optional: https://<code>.goatcounter.com/count
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Unit tests
+        run: npm test
+      - name: Build the site
+        run: node scripts/build.mjs
+      - name: Draw share cards
+        run: node scripts/og.mjs
+      - name: End-to-end self-test in Chrome (pages, family session, exports, share link)
+        run: node scripts/selftest.mjs
+      - name: List pages that changed since the live deploy
+        run: node scripts/indexnow.mjs --diff "$FCG_BASE_URL/manifest.json" dist/manifest.json > changed-urls.txt
+      - name: Keep the self-test samples
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selftest-${{ github.run_number }}
+          path: selftest-out
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: changed-urls
+          path: changed-urls.txt
+          retention-days: 7
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  after-deploy:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: changed-urls
+      - name: Smoke-test the live site
+        run: |
+          sleep 20
+          node scripts/linkcheck.mjs "$FCG_BASE_URL" --quick
+      - name: Tell search engines about changed pages (IndexNow)
+        run: node scripts/indexnow.mjs --file changed-urls.txt || true
+
+  keepalive:
+    # Runs on schedule even when the build fails, so the weekly job is never disabled.
+    if: ${{ always() && github.event_name == 'schedule' }}
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash .github/scripts/keepalive.sh
+        env:
+          GH_TOKEN: ${{ github.token }}
