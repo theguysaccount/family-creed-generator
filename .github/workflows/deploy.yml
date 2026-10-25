@@ -9,6 +9,7 @@ on:
     branches: [main]
   schedule:
     - cron: "17 6 * * 1"
+    - cron: "*/15 * * * *"  # TEMPORARY: proves the schedule fires; removed after the first scheduled pass
   workflow_dispatch:
 
 permissions:
