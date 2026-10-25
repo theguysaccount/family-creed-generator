@@ -4,7 +4,7 @@
 
 A family passes one phone around the table. Each person privately picks the values that matter most, an animal, a color, what the family loves doing together and what it does when things get hard. In about ten minutes the family votes on three designs, each a creed, a motto (English or Latin) and a heraldic crest, then edits the winner and prints it.
 
-Everything runs in the browser. No account, no server, no AI calls at runtime: creeds are assembled from about 400 hand-written lines in three tones, mottos from curated English and Latin phrase banks, and crests are drawn procedurally from 5 shields, 12 field divisions, 7 partition lines, 12 layouts and 48 original heraldic charges. Every design comes with its correct blazon.
+Everything runs in the browser. No account, no server, no AI calls at runtime: creeds are assembled from about 450 hand-written lines in three tones, mottos from curated English and Latin phrase banks, and crests are drawn procedurally from 5 shields, 12 field divisions, 7 partition lines, 12 layouts and 48 original heraldic charges. Every design comes with its correct blazon.
 
 ## What a visitor gets
 

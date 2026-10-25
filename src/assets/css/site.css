@@ -28,7 +28,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --paper: #16130f; --card: #201c17; --cream: #2a241c; --ink: #f1e9d8; --muted: #b9aa92; --line: #3b3328;
-    --red: #c4473b; --gold: #d2aa52; --blue: #7aa7ec; --focus: #9cc0ff; --ok: #6fbf84;
+    --red: #e06656; --red-ink: #16130f; --gold: #d2aa52; --blue: #7aa7ec; --focus: #9cc0ff; --ok: #6fbf84;
     --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .3);
     color-scheme: dark;
   }
@@ -100,7 +100,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--focus); outline:
 .steps { display: grid; gap: 16px; counter-reset: s; padding: 0; list-style: none; }
 @media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
 .steps li { counter-increment: s; }
-.steps li::before { content: counter(s); display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--red); color: #fff; font: 700 1rem var(--display); margin-bottom: 8px; }
+.steps li::before { content: counter(s); display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--red); color: var(--red-ink); font: 700 1rem var(--display); margin-bottom: 8px; }
 .grid-cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 .example-card { text-decoration: none; color: var(--ink); display: block; }
 .example-card svg { width: 100%; height: auto; display: block; }
@@ -141,7 +141,7 @@ table.plain th, table.plain td { text-align: left; padding: 8px 10px; border-bot
 .chip { position: relative; }
 .chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
 .chip span { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--card); font-weight: 600; cursor: pointer; user-select: none; }
-.chip input:checked + span { background: var(--red); border-color: var(--red); color: #fff; }
+.chip input:checked + span { background: var(--red); border-color: var(--red); color: var(--red-ink); }
 .chip input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
 .chip input:disabled + span { opacity: .45; cursor: not-allowed; }
 .group-label { font-size: .85rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 16px 0 8px; font-weight: 700; }
