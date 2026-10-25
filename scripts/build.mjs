@@ -269,7 +269,7 @@ ${list}
       ...pairs.map((x) => [`${tt(v.latin.abl)} et ${tt(x.latin.abl)}`, `By ${v.latin.gloss} and ${x.latin.gloss}`])];
     const T = TINCTURES[v.tincture];
     const animal = ANIMAL_CHOICES.find((a) => a.value === v.id);
-    const sym = [...v.charges, ...(animal && !v.charges.includes(animal.id) ? [animal.id] : [])].map((c) => `<figure><svg viewBox="0 0 200 200" aria-hidden="true">${chargeSvg(c, METALS.includes(v.tincture) ? "azure" : "or", 100, 100, 180, 4)}</svg><figcaption><b>${esc(cap(CHARGES[c].plain))}</b>${esc(CHARGE_MEANINGS[c] || "")}</figcaption></figure>`).join("");
+    const sym = [...v.charges, ...(animal && !v.charges.includes(animal.id) ? [animal.id] : [])].map((c) => `<figure><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="99" fill="${METALS.includes(v.tincture) ? "#F3EAD3" : "#1F4F9A"}"/>${chargeSvg(c, METALS.includes(v.tincture) ? "azure" : "or", 100, 100, 150, 4)}</svg><figcaption><b>${esc(cap(CHARGES[c].plain))}</b>${esc(CHARGE_MEANINGS[c] || "")}</figcaption></figure>`).join("");
     const title = `${v.label}: family mottos, Latin phrases and creed lines`;
     const og = ogCard(`og/values-${v.id}.jpg`, `${v.label}`, "Family mottos, Latin phrases, creed lines and symbols", crestSvg(d.spec, { id: "og" + v.id }));
     const body = `<div class="wrap article">${crumbHtml([["Home", ""], ["Family values", "values/"], [v.label, `values/${v.id}/`]])}
@@ -370,18 +370,18 @@ ${VALUES.map((v) => `<tr><td><a href="${L(`values/${v.id}/`)}">${esc(v.label)}</
 }
 
 function heraldryPage() {
-  const shieldDemo = (spec, id, cap0) => `<figure>${crestSvg({ shield: "heater", frame: "none", crest: false, ribbon: false, finish: "flat", main: "", second: "", t: ["argent", "azure", "gules", "or", "or"], ...spec }, { id })}<figcaption>${cap0}</figcaption></figure>`;
+  const shieldDemo = (spec, id, cap0) => `<figure class="shield-demo">${crestSvg({ shield: "heater", frame: "none", crest: false, ribbon: false, finish: "flat", main: "", second: "", t: ["argent", "azure", "gules", "or", "or"], ...spec }, { id })}<figcaption>${cap0}</figcaption></figure>`;
   const tinctureRows = Object.entries(TINCTURES).map(([k, T]) => `<tr><td><span class="swatch" style="background:${T.hex}"></span>${esc(T.name)}</td><td>${esc(T.plain)}</td><td>${T.kind === "metal" ? "metal" : "color"}</td><td>${esc(T.meaning)}</td></tr>`).join("");
   const divisions = Object.entries(DIVISIONS).map(([k, D]) => shieldDemo({ layout: "party", division: k, line: "straight", t: ["argent", "azure", "or", "or", "or"] }, "hd" + k, `<b>${esc(D.label)}</b>`)).join("");
   const lines = Object.entries(LINES).map(([k, Ln]) => shieldDemo({ layout: "party", division: "fess", line: k, t: ["or", "gules", "or", "or", "or"] }, "hl" + k, `<b>${esc(Ln.label)}</b>`)).join("");
   const ords = ["chief", "chevron", "fess", "bend", "cross", "saltire", "canton", "bordure"].map((k) => shieldDemo({ layout: k, line: "straight", t: ["azure", "or", "or", "or", "or"] }, "ho" + k, `<b>${esc(cap(k))}</b><br>${esc(ORDINARY_MEANINGS[k].replace(/^the [a-z]+,?( [^,]+,)? ?/i, ""))}`)).join("");
-  const charges = Object.values(CHARGES).map((c) => `<figure><svg viewBox="0 0 200 200" aria-hidden="true">${chargeSvg(c.id, c.kind === "animal" ? "gules" : "azure", 100, 100, 180, 4)}</svg><figcaption><b>${esc(cap(c.plain))}</b><i class="small">${esc(c.name)}</i><br>${esc(CHARGE_MEANINGS[c.id] || "")}</figcaption></figure>`).join("");
+  const charges = Object.values(CHARGES).map((c) => `<figure><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="99" fill="#F3EAD3"/>${chargeSvg(c.id, c.kind === "animal" ? "gules" : "azure", 100, 100, 150, 4)}</svg><figcaption><b>${esc(cap(c.plain))}</b><i class="small">${esc(c.name)}</i><br>${esc(CHARGE_MEANINGS[c.id] || "")}</figcaption></figure>`).join("");
   const ex = [
     { shield: "heater", layout: "chevron", line: "straight", t: ["azure", "or", "or", "argent", "argent"], main: "lion", second: "star", frame: "none", crest: false, ribbon: false },
     { shield: "heater", layout: "party", division: "pale", line: "straight", t: ["or", "gules", "or", "or", "or"], main: "eagle", second: "star", frame: "none", crest: false, ribbon: false },
     { shield: "heater", layout: "chief", line: "embattled", t: ["vert", "or", "argent", "or", "vert"], main: "stag", second: "rose", frame: "none", crest: false, ribbon: false },
   ];
-  const exHtml = ex.map((s, i) => `<figure>${crestSvg(s, { id: "hx" + i })}<figcaption><i>${esc(blazon(s))}</i></figcaption></figure>`).join("");
+  const exHtml = ex.map((s, i) => `<figure class="shield-demo">${crestSvg(s, { id: "hx" + i })}<figcaption><i>${esc(blazon(s))}</i></figcaption></figure>`).join("");
   pages.push({
     path: "heraldry/", title: "Heraldry symbols and colors and their meanings: a family guide", h1: "Heraldry for families",
     desc: "What the colors, divisions, bands and animals on a coat of arms mean, how to read a blazon, and how to design a family crest without copying anyone's arms.",

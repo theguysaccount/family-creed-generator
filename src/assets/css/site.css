@@ -228,3 +228,4 @@ details.panel > div { padding: 0 16px 16px; }
   .site-nav { gap: 2px 12px; font-size: .9rem; margin-left: 0; width: 100%; }
   .site-head .wrap { gap: 4px 10px; }
 }
+.sym-grid figure.shield-demo svg { width: 100%; height: auto; max-height: 180px; }
